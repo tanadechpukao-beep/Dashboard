@@ -326,6 +326,36 @@ function mountRosterRoutes(app) {
   });
 
   console.log('✅ Roster API routes mounted at /api/roster/*');
+
+  // Seed admin account on startup
+  seedAdmin().catch(err => console.error('Seed admin error:', err));
+}
+
+// ── Seed default admin ────────────────────────────────────────────────────────
+async function seedAdmin() {
+  const username = (process.env.SEED_ADMIN_USERNAME || 'tana').toLowerCase();
+  const password = process.env.SEED_ADMIN_PASSWORD || 'NakhonSi2569';
+  const robloxName = process.env.SEED_ADMIN_ROBLOX || 'Tana';
+
+  const existing = await rosterDb.getUserByUsername(username);
+  if (existing) {
+    console.log(`ℹ️  Seed admin "${username}" already exists`);
+    return;
+  }
+
+  const salt = generateSalt();
+  const hash = hashPassword(password, salt);
+  await rosterDb.createUser({
+    username,
+    password_hash: hash,
+    password_salt: salt,
+    roblox_name: robloxName,
+    discord_tag: null,
+    avatar_url: null,
+    role: 'admin',
+    created_at: new Date().toISOString()
+  });
+  console.log(`✅ Seed admin created — username: ${username} / password: ${password}`);
 }
 
 module.exports = { mountRosterRoutes };

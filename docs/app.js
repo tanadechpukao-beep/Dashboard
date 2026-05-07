@@ -2,8 +2,10 @@
 'use strict';
 
 // ══════════════ State ══════════════
+const DEFAULT_API_URL = 'https://nongmai-production.up.railway.app';
+
 const state = {
-  apiUrl: localStorage.getItem('roster-api-url') || '',
+  apiUrl: localStorage.getItem('roster-api-url') || DEFAULT_API_URL,
   token:  localStorage.getItem('roster-token')   || '',
   user:   null
 };
@@ -95,10 +97,7 @@ function fmtTime(iso) {
 
 // ══════════════ Init ══════════════
 async function init() {
-  if (!state.apiUrl) {
-    showScreen('config');
-    return;
-  }
+  // Always skip config screen — URL is pre-configured
   if (state.token) {
     try {
       const data = await api('GET', '/api/roster/me');
@@ -141,8 +140,8 @@ $('btn-config-save').addEventListener('click', async () => {
   }
 });
 
-// Pre-fill config URL if set
-if (state.apiUrl) $('config-api-url').value = state.apiUrl;
+// Pre-fill config URL
+$('config-api-url').value = state.apiUrl;
 
 $('btn-change-config').addEventListener('click', e => {
   e.preventDefault();
