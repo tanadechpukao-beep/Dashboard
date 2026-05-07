@@ -1,6 +1,7 @@
 // api.js - Express API server for web dashboard (NakhonSi)
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const db = require('./database');
 const { initImageCheck } = require('./image-check');
 const { mountRosterRoutes } = require('./roster-api');
@@ -164,6 +165,12 @@ function startAPI(discordClient) {
   // ============ Roster system ============
   initImageCheck(process.env.GROQ_API_KEY);
   mountRosterRoutes(app);
+
+  // ============ Serve frontend static files ============
+  app.use(express.static(path.join(__dirname, '..', 'public')));
+  app.use((req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  });
 
   // ============ Start server ============
   app.listen(PORT, () => {
