@@ -1,0 +1,45 @@
+{
+  "points": [
+    {
+      "id": 1,
+      "guild_id": "pending",
+      "roblox_name": "TomAe145",
+      "discord_name": "@[ ๑ ] | TomAe145",
+      "activity": "รวมงานแต่ง",
+      "points": 5,
+      "work_number": 1,
+      "message_id": null,
+      "channel_id": null,
+      "raw_message": "ผลงานที่ 1 — แต้มเริ่มต้น 5",
+      "created_at": "2026-04-14T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "guild_id": "pending",
+      "roblox_name": "TomAe145",
+      "discord_name": "@[ ๑ ] | TomAe145",
+      "activity": "รวมงานแต่ง",
+      "points": 5,
+      "work_number": 2,
+      "message_id": null,
+      "channel_id": null,
+      "raw_message": "𝐧𝐚𝐦𝐞 𝐫𝐨𝐛𝐥𝐨𝐱 ชื่อในเกม : TomAe145\n𝐧𝐚𝐦𝐞 𝐃𝐢𝐬𝐜𝐨𝐫𝐝 ชื่อในดิส : @[ ๑ ] | TomAe145\nกิจกรรมอะไร-เข้าเวรกี่ชั่วโมง : รวมงานแต่ง\nผลงานนี้กี่แต้ม :5\nแต้มรวมทั้งหมดตอนนี้ : 10\nผลงานที่เท่าไหร่ : 2",
+      "created_at": "2026-04-14T08:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "guild_id": "pending",
+      "roblox_name": "jang230256",
+      "discord_name": "@[๑] | jang230256",
+      "activity": "เข้าเวร/คุ้มกัน",
+      "points": 0,
+      "work_number": 0,
+      "message_id": null,
+      "channel_id": null,
+      "raw_message": "𝐧𝐚𝐦𝐞 𝐫𝐨𝐛𝐥𝐨𝐱ชื่อในเกม :jang230256\n𝐧𝐚𝐦𝐞 𝐃𝐢𝐬𝐜𝐨𝐫𝐝 ชื่อในดิส : @[๑] | jang230256\nระยะเวลาการเข้าเวร: จำไม่ได้\nสถานการณ์ : ปกติ\nคนที่ทหารทำการคุ้มกัน : @เจ้าเมืองนครศรีฯ | LayYer",
+      "created_at": "2026-04-14T08:00:00.000Z"
+    }
+  ],
+  "scan_history": [],
+  "nextId": 4
+}

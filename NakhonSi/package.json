@@ -1,0 +1,18 @@
+{
+  "name": "discord-nakhonsi-point-bot",
+  "version": "1.0.0",
+  "description": "Discord bot นับแต้มสำหรับเมืองนครศรีธรรมราช - ใช้ AI อ่านแบบฟอร์มผลงาน/เข้าเวร",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.1",
+    "express": "^5.2.1",
+    "firebase-admin": "^12.7.0",
+    "openai": "^4.28.0"
+  }
+}
