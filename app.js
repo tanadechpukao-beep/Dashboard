@@ -521,13 +521,17 @@ const BotDash = (function () {
     div.textContent = str; return div.innerHTML;
   }
 
+  const NAKHONSI_URL = 'https://nongmai-production.up.railway.app';
+
   function loadSavedConfig() {
+    // Pre-fill NakhonSi URL
+    $('bd-nakhonsi-url').value = NAKHONSI_URL;
     try {
       const saved = localStorage.getItem('bot-dashboard-config');
       if (saved) {
         const parsed = JSON.parse(saved);
         $('bd-mint-url').value     = parsed.mintUrl || '';
-        $('bd-nakhonsi-url').value = parsed.nakhonsiUrl || '';
+        $('bd-nakhonsi-url').value = parsed.nakhonsiUrl || NAKHONSI_URL;
         $('bd-mint-key').value     = parsed.mintKey || '';
         $('bd-nakhonsi-key').value = parsed.nakhonsiKey || '';
         $('bd-save-config').checked = true;
