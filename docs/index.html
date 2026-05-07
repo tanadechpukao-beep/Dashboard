@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบเช็คกำลังพล — นครศรีธรรมราช</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ══════════════ CONFIG SCREEN ══════════════ -->
+  <div id="screen-config" class="screen-center">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="brand-icon">⚔️</div>
+        <h1>ระบบเช็คกำลังพล</h1>
+        <p class="subtitle">นครศรีธรรมราช</p>
+      </div>
+      <div class="form-group">
+        <label>Bot API URL</label>
+        <input type="text" id="config-api-url" placeholder="https://nakhonsi-bot.up.railway.app">
+      </div>
+      <button id="btn-config-save" class="btn btn-primary btn-full">เชื่อมต่อ</button>
+      <p id="config-error" class="err-text"></p>
+    </div>
+  </div>
+
+  <!-- ══════════════ AUTH SCREEN ══════════════ -->
+  <div id="screen-auth" class="screen-center hidden">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="brand-icon">⚔️</div>
+        <h1>ระบบเช็คกำลังพล</h1>
+        <p class="subtitle">นครศรีธรรมราช</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-tab="login">เข้าสู่ระบบ</button>
+        <button class="tab-btn" data-tab="register">สมัครสมาชิก</button>
+      </div>
+
+      <!-- Login Tab -->
+      <div id="tab-login">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="login-username" placeholder="ชื่อผู้ใช้" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label>รหัสผ่าน</label>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button id="btn-login" class="btn btn-primary btn-full">เข้าสู่ระบบ</button>
+        <p id="login-error" class="err-text"></p>
+      </div>
+
+      <!-- Register Tab -->
+      <div id="tab-register" class="hidden">
+        <div class="form-group">
+          <label>Username <span class="hint">a-z 0-9 _ ยาว 3-30 ตัว</span></label>
+          <input type="text" id="reg-username" placeholder="เช่น nakhonsi_soldier" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label>รหัสผ่าน <span class="hint">อย่างน้อย 6 ตัว</span></label>
+          <input type="password" id="reg-password" placeholder="••••••••" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label>ชื่อใน Roblox</label>
+          <input type="text" id="reg-roblox" placeholder="Roblox username">
+        </div>
+        <div class="form-group">
+          <label>Discord Tag <span class="hint">(ไม่บังคับ)</span></label>
+          <input type="text" id="reg-discord" placeholder="username หรือ username#0000">
+        </div>
+        <div class="form-group">
+          <label>รูปโปรไฟล์ <span class="hint">(ไม่บังคับ — AI ตรวจ 18+)</span></label>
+          <div class="avatar-upload-area" id="avatar-upload-area">
+            <img id="avatar-preview" class="hidden" alt="preview">
+            <div id="avatar-placeholder">
+              <span class="upload-icon">📷</span>
+              <span>คลิกเพื่ออัปโหลดรูป</span>
+            </div>
+            <input type="file" id="reg-avatar" accept="image/*" style="display:none">
+          </div>
+          <p id="avatar-ai-status" class="hint-text"></p>
+        </div>
+        <button id="btn-register" class="btn btn-primary btn-full">สมัครสมาชิก</button>
+        <p id="register-error" class="err-text"></p>
+      </div>
+
+      <div class="auth-footer">
+        <a href="#" id="btn-change-config">⚙️ เปลี่ยน API URL</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ DASHBOARD ══════════════ -->
+  <div id="screen-dashboard" class="hidden dashboard-layout">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-profile">
+        <img id="sidebar-avatar" class="avatar-md" src="" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect width=%2248%22 height=%2248%22 fill=%225865f2%22 rx=%2224%22/%3E%3Ctext x=%2224%22 y=%2232%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22%3E?%3C/text%3E%3C/svg%3E'">
+        <div class="profile-text">
+          <div id="sidebar-username" class="profile-name">—</div>
+          <div id="sidebar-role" class="role-badge">—</div>
+        </div>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item active" data-page="sessions">
+          <span class="nav-icon">📋</span> เช็คกำลังพล
+        </li>
+        <li class="nav-item" data-page="history">
+          <span class="nav-icon">📊</span> ประวัติของฉัน
+        </li>
+        <li class="nav-item" data-page="profile">
+          <span class="nav-icon">👤</span> โปรไฟล์
+        </li>
+        <li class="nav-item admin-only hidden" data-page="admin-sessions">
+          <span class="nav-icon">⚙️</span> จัดการเซสชัน
+        </li>
+        <li class="nav-item admin-only hidden" data-page="admin-users">
+          <span class="nav-icon">👥</span> จัดการสมาชิก
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <button id="btn-logout" class="btn btn-outline-sm">ออกจากระบบ</button>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Toast -->
+      <div id="toast" class="toast hidden"></div>
+
+      <!-- ── Page: Sessions ── -->
+      <section id="page-sessions" class="page">
+        <div class="page-header">
+          <h2>📋 เช็คกำลังพล</h2>
+          <button id="btn-refresh-sessions" class="btn btn-icon" title="รีเฟรช">🔄</button>
+        </div>
+        <div id="sessions-list" class="sessions-grid">
+          <div class="loading-state">⏳ กำลังโหลด...</div>
+        </div>
+      </section>
+
+      <!-- ── Page: History ── -->
+      <section id="page-history" class="page hidden">
+        <div class="page-header">
+          <h2>📊 ประวัติการเช็คกำลังพล</h2>
+        </div>
+        <div id="history-list"></div>
+      </section>
+
+      <!-- ── Page: Profile ── -->
+      <section id="page-profile" class="page hidden">
+        <div class="page-header">
+          <h2>👤 โปรไฟล์</h2>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
+            <img id="profile-avatar-img" class="avatar-xl" src="" alt=""
+              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22128%22 height=%22128%22%3E%3Crect width=%22128%22 height=%22128%22 fill=%225865f2%22 rx=%2264%22/%3E%3Ctext x=%2264%22 y=%2285%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2256%22%3E?%3C/text%3E%3C/svg%3E'">
+            <button id="btn-change-avatar" class="btn btn-secondary btn-sm">📷 เปลี่ยนรูป</button>
+            <input type="file" id="profile-avatar-file" accept="image/*" style="display:none">
+          </div>
+          <div class="profile-info">
+            <div class="info-row"><span class="info-label">Username</span><strong id="profile-username">—</strong></div>
+            <div class="info-row"><span class="info-label">Roblox</span><strong id="profile-roblox">—</strong></div>
+            <div class="info-row"><span class="info-label">Discord</span><strong id="profile-discord">—</strong></div>
+            <div class="info-row"><span class="info-label">Role</span><strong id="profile-role">—</strong></div>
+          </div>
+        </div>
+        <p id="profile-status" class="status-text"></p>
+      </section>
+
+      <!-- ── Page: Admin Sessions ── -->
+      <section id="page-admin-sessions" class="page hidden">
+        <div class="page-header">
+          <h2>⚙️ จัดการเซสชัน</h2>
+          <button id="btn-refresh-admin-sessions" class="btn btn-icon" title="รีเฟรช">🔄</button>
+        </div>
+
+        <!-- Create session -->
+        <div class="card mb-3">
+          <h3 class="card-title">📢 ประกาศเช็คกำลังพลใหม่</h3>
+          <div class="form-group">
+            <label>หัวข้อ <span class="required">*</span></label>
+            <input type="text" id="new-session-title" placeholder="เช่น เช็คกำลังพล 7 พ.ค. 2569">
+          </div>
+          <div class="form-group">
+            <label>รายละเอียด <span class="hint">(ไม่บังคับ)</span></label>
+            <textarea id="new-session-desc" rows="2" placeholder="รายละเอียดเพิ่มเติม..."></textarea>
+          </div>
+          <button id="btn-create-session" class="btn btn-primary">📢 ประกาศ</button>
+          <p id="create-session-status" class="status-text"></p>
+        </div>
+
+        <!-- Session list (admin) -->
+        <h3 class="section-title">รายการเซสชันทั้งหมด</h3>
+        <div id="admin-sessions-list"></div>
+      </section>
+
+      <!-- ── Page: Admin Users ── -->
+      <section id="page-admin-users" class="page hidden">
+        <div class="page-header">
+          <h2>👥 จัดการสมาชิก</h2>
+          <button id="btn-refresh-users" class="btn btn-icon" title="รีเฟรช">🔄</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="admin-users-table">
+            <thead>
+              <tr>
+                <th>รูป</th>
+                <th>Username</th>
+                <th>Roblox</th>
+                <th>Discord</th>
+                <th>Role</th>
+                <th>สมัครเมื่อ</th>
+                <th>การกระทำ</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody">
+              <tr><td colspan="7" class="loading-state">⏳ กำลังโหลด...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ══════════════ MODAL: ATTENDEES ══════════════ -->
+  <div id="modal-attendees" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-session-title">ผู้เข้าร่วม</h3>
+        <button id="modal-close" class="modal-close">✕</button>
+      </div>
+      <div id="modal-attendees-list" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
