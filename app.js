@@ -26,7 +26,7 @@ function goHome() {
 const Roster = (function () {
   const $ = id => document.getElementById(id);
 
-  const DEFAULT_API_URL = window.location.origin;
+  const DEFAULT_API_URL = 'https://nongmai-production.up.railway.app';
   const state = {
     apiUrl: localStorage.getItem('roster-api-url') || DEFAULT_API_URL,
     token:  localStorage.getItem('roster-token') || '',
