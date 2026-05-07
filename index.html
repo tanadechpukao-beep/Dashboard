@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Dashboard — ศูนย์ควบคุมบอท</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ============ Login Screen ============ -->
+  <div id="login-screen" class="screen">
+    <div class="login-card">
+      <h1>🤖 Bot Dashboard</h1>
+      <p class="subtitle">ศูนย์ควบคุมบอทนับแต้ม</p>
+      <div class="form-group">
+        <label>🟢 Mint Bot URL</label>
+        <input type="text" id="mint-url" placeholder="https://mint-bot.up.railway.app">
+      </div>
+      <div class="form-group">
+        <label>🔵 NakhonSi Bot URL</label>
+        <input type="text" id="nakhonsi-url" placeholder="https://nakhonsi-bot.up.railway.app">
+      </div>
+      <div class="form-group">
+        <label>🔑 Mint API Key</label>
+        <input type="password" id="mint-key" placeholder="API key ของ Mint bot">
+      </div>
+      <div class="form-group">
+        <label>🔑 NakhonSi API Key</label>
+        <input type="password" id="nakhonsi-key" placeholder="API key ของ NakhonSi bot">
+      </div>
+      <label class="checkbox-label">
+        <input type="checkbox" id="save-config"> จดจำการตั้งค่า
+      </label>
+      <button id="btn-connect" class="btn btn-primary btn-full">เชื่อมต่อ</button>
+      <p id="login-error" class="error-text"></p>
+    </div>
+  </div>
+
+  <!-- ============ Main Dashboard ============ -->
+  <div id="dashboard" class="screen hidden">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h2>🤖 Dashboard</h2>
+      </div>
+      <ul class="nav-list">
+        <li class="nav-item active" data-page="status">
+          <span class="nav-icon">📊</span> สถานะบอท
+        </li>
+        <li class="nav-item" data-page="points">
+          <span class="nav-icon">⭐</span> จัดการแต้ม
+        </li>
+        <li class="nav-item" data-page="leaderboard">
+          <span class="nav-icon">🏆</span> อันดับ
+        </li>
+        <li class="nav-item" data-page="send-msg">
+          <span class="nav-icon">💬</span> ส่งข้อความ
+        </li>
+        <li class="nav-item" data-page="settings">
+          <span class="nav-icon">⚙️</span> ตั้งค่า
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <button id="btn-logout" class="btn btn-outline btn-sm">ออกจากระบบ</button>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Bot Selector -->
+      <div class="bot-selector">
+        <button class="bot-tab active" data-bot="mint">🟢 น้องมิ้น (Mint)</button>
+        <button class="bot-tab" data-bot="nakhonsi">🔵 น้องมาย (NakhonSi)</button>
+      </div>
+
+      <!-- Page: Status -->
+      <section id="page-status" class="page">
+        <h2>📊 สถานะบอท</h2>
+        <div class="status-cards">
+          <div class="card" id="card-mint">
+            <div class="card-header green">🟢 น้องมิ้น (Mint)</div>
+            <div class="card-body">
+              <div class="status-dot" id="mint-status-dot">⏳</div>
+              <p id="mint-status-text">กำลังตรวจสอบ...</p>
+              <div class="status-details" id="mint-details"></div>
+            </div>
+          </div>
+          <div class="card" id="card-nakhonsi">
+            <div class="card-header blue">🔵 น้องมาย (NakhonSi)</div>
+            <div class="card-body">
+              <div class="status-dot" id="nakhonsi-status-dot">⏳</div>
+              <p id="nakhonsi-status-text">กำลังตรวจสอบ...</p>
+              <div class="status-details" id="nakhonsi-details"></div>
+            </div>
+          </div>
+        </div>
+        <button id="btn-refresh-status" class="btn btn-secondary">🔄 รีเฟรช</button>
+      </section>
+
+      <!-- Page: Points -->
+      <section id="page-points" class="page hidden">
+        <h2>⭐ จัดการแต้ม</h2>
+
+        <!-- Guild selector -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>เซิร์ฟเวอร์</label>
+            <select id="guild-select-points"><option value="">เลือกเซิร์ฟเวอร์...</option></select>
+          </div>
+          <button id="btn-load-points" class="btn btn-primary">โหลดข้อมูล</button>
+        </div>
+
+        <!-- Points table -->
+        <div class="table-container">
+          <table id="points-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ชื่อผู้ใช้</th>
+                <th>Discord</th>
+                <th>แต้มรวม</th>
+                <th>จำนวนรายการ</th>
+              </tr>
+            </thead>
+            <tbody id="points-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Search user -->
+        <div class="section-divider"></div>
+        <h3>🔍 ค้นหาผู้ใช้</h3>
+        <div class="form-row">
+          <input type="text" id="search-user" placeholder="ชื่อผู้ใช้...">
+          <button id="btn-search-user" class="btn btn-primary">ค้นหา</button>
+        </div>
+        <div id="user-detail-result"></div>
+
+        <!-- Add/Remove points (NakhonSi only) -->
+        <div id="manage-points-section">
+          <div class="section-divider"></div>
+          <h3>➕ เพิ่ม/ลดแต้ม</h3>
+          <div class="form-row">
+            <input type="text" id="manage-user" placeholder="ชื่อผู้ใช้ (Roblox)">
+            <input type="number" id="manage-amount" placeholder="จำนวนแต้ม">
+            <input type="text" id="manage-reason" placeholder="เหตุผล/กิจกรรม">
+          </div>
+          <div class="form-row">
+            <button id="btn-add-points" class="btn btn-success">➕ เพิ่มแต้ม</button>
+            <button id="btn-remove-points" class="btn btn-danger">➖ ลดแต้ม</button>
+          </div>
+          <p id="manage-result" class="result-text"></p>
+        </div>
+      </section>
+
+      <!-- Page: Leaderboard -->
+      <section id="page-leaderboard" class="page hidden">
+        <h2>🏆 อันดับ</h2>
+        <div class="form-row">
+          <select id="guild-select-lb"><option value="">เลือกเซิร์ฟเวอร์...</option></select>
+          <input type="number" id="lb-limit" value="20" min="1" max="100" placeholder="จำนวน">
+          <button id="btn-load-lb" class="btn btn-primary">โหลด</button>
+        </div>
+        <div id="leaderboard-content"></div>
+      </section>
+
+      <!-- Page: Send Message -->
+      <section id="page-send-msg" class="page hidden">
+        <h2>💬 ส่งข้อความ</h2>
+        <div class="form-group">
+          <label>เซิร์ฟเวอร์</label>
+          <select id="guild-select-msg"><option value="">เลือกเซิร์ฟเวอร์...</option></select>
+        </div>
+        <div class="form-group">
+          <label>ช่อง</label>
+          <select id="channel-select"><option value="">เลือกช่อง...</option></select>
+        </div>
+        <div class="form-group">
+          <label>ข้อความ</label>
+          <textarea id="msg-content" rows="4" placeholder="พิมพ์ข้อความที่ต้องการส่ง..."></textarea>
+        </div>
+        <button id="btn-send-msg" class="btn btn-primary">📤 ส่งข้อความ</button>
+        <p id="send-result" class="result-text"></p>
+      </section>
+
+      <!-- Page: Settings -->
+      <section id="page-settings" class="page hidden">
+        <h2>⚙️ ตั้งค่า</h2>
+        <div class="card">
+          <div class="card-body">
+            <h3>ล้างแต้มทั้งหมด</h3>
+            <p class="text-muted">⚠️ การกระทำนี้ไม่สามารถย้อนกลับได้</p>
+            <div class="form-row">
+              <select id="guild-select-clear"><option value="">เลือกเซิร์ฟเวอร์...</option></select>
+              <button id="btn-clear-points" class="btn btn-danger">🗑️ ล้างแต้มทั้งหมด</button>
+            </div>
+            <p id="clear-result" class="result-text"></p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-body">
+            <h3>เกี่ยวกับ</h3>
+            <p>Bot Dashboard v1.0</p>
+            <p class="text-muted">ระบบควบคุมบอทนับแต้ม — Powered by Firebase + Railway</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
